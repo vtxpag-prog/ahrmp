@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import { COMMERCIAL_TIER_LABELS } from '../config/brand.ts';
 import {
+  DEFAULT_CATEGORIES,
   DEFAULT_FEATURED_COMPANIES,
   DEFAULT_FEATURED_OFFERS,
   filterFallbackOffers,
@@ -79,9 +80,8 @@ export function CatalogView({
   const [issueError, setIssueError] = useState('');
 
   useEffect(() => {
-    if (initialCategoryId !== undefined) {
-      setCategoryId(initialCategoryId);
-    }
+    setCategoryId(initialCategoryId || 0);
+    setSubcategory('');
   }, [initialCategoryId]);
 
   useEffect(() => {
@@ -162,8 +162,14 @@ export function CatalogView({
     };
   }, [selectedCompanyId, companies, fallbackOffers]);
 
-  const activeCategory = categories.find((c) => c.id === categoryId);
-  const categoriesWithOffers = categories.filter((c) => (c.activeOffersCount || 0) > 0);
+  const safeCategories = categories.length > 0 ? categories : DEFAULT_CATEGORIES;
+  const safeCompanies = companies.length > 0 ? companies : DEFAULT_FEATURED_COMPANIES;
+  const activeCategory = safeCategories.find((c) => c.id === categoryId);
+  const rawCategoriesWithOffers = safeCategories.filter(
+    (c) => (c.activeOffersCount || 0) > 0 || c.id === categoryId,
+  );
+  const categoriesWithOffers =
+    rawCategoriesWithOffers.length > 0 ? rawCategoriesWithOffers : safeCategories;
   const totalRedemptionsAllOffers = offers.reduce((acc, o) => acc + (o.redemptionsCount || 0), 0);
 
   async function handleGenerateCoupon(offer: Offer) {
@@ -613,11 +619,11 @@ export function CatalogView({
       )}
 
       {/* Participating Companies Summary Row */}
-      {companies.length > 0 && (
+      {safeCompanies.length > 0 && (
         <div className="pt-4 border-t border-slate-200 space-y-4">
           <h2 className="text-lg font-bold text-slate-900">Empresas participantes aprovadas</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {companies.map((c) => (
+            {safeCompanies.map((c) => (
               <button
                 key={c.id}
                 type="button"

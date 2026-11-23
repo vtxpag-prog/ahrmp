@@ -141,7 +141,7 @@ export function PlansView({
 
               <p className="text-base text-slate-600 leading-relaxed max-w-2xl">
                 Escolha o nível de adesão ideal para o seu orçamento — de{' '}
-                <strong className="text-slate-900 tabular-nums">R$ 12,00/mês</strong> a{' '}
+                <strong className="text-slate-900 tabular-nums">R$ 0,00/mês</strong> (gratuito) a{' '}
                 <strong className="text-slate-900 tabular-nums">R$ 99,90/mês</strong> — com
                 inclusão livre de dependentes, familiares e indicados sem burocracia.
               </p>
@@ -304,8 +304,8 @@ export function PlansView({
               Simule o investimento mensal para toda a família
             </h2>
             <p className="text-sm text-slate-600 leading-relaxed">
-              No <strong>Plano Base</strong>, incluir quem você ama custa apenas{' '}
-              <strong className="tabular-nums">R$ 6,00/mês</strong> por pessoa. Nos planos Bronze,
+              No <strong>Plano Base</strong>, tanto o titular quanto os dependentes têm acesso
+              gratuito (<strong className="tabular-nums">R$ 0,00/mês</strong>). Nos planos Bronze,
               Prata e Ouro, cada dependente usufrui de toda a proteção por{' '}
               <strong className="tabular-nums">+ R$ 12,00/mês</strong> — sem limite de quantidade
               para cônjuge, filhos, pais e familiares.
@@ -495,8 +495,8 @@ export function PlansView({
                 <CheckCircle2 className="w-4 h-4 text-brand-accent shrink-0 mt-0.5" />
                 <span>
                   Opções acessíveis para todos os bolsos, de{' '}
-                  <span className="tabular-nums font-medium">R$ 12,00</span> a{' '}
-                  <span className="tabular-nums font-medium">R$ 99,90/mês</span>.
+                  <span className="tabular-nums font-medium">R$ 0,00</span> (Plano Base gratuito)
+                  a <span className="tabular-nums font-medium">R$ 99,90/mês</span>.
                 </span>
               </li>
               <li className="flex items-start gap-2.5">

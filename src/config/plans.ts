@@ -18,11 +18,11 @@ export const MEMBERSHIP_PLANS: MembershipPlan[] = [
   {
     id: 'base',
     name: 'Plano Base',
-    tierSubtitle: 'Entrada Acessível',
-    tagline: 'O essencial para economizar no dia a dia com acesso digital simples.',
-    holderMonthlyPrice: 12.0,
-    dependentMonthlyPrice: 6.0,
-    dependentPriceLabel: 'R$ 6,00/mês',
+    tierSubtitle: 'Acesso Gratuito',
+    tagline: 'O essencial para economizar no dia a dia com acesso digital simples e sem mensalidade.',
+    holderMonthlyPrice: 0,
+    dependentMonthlyPrice: 0,
+    dependentPriceLabel: 'R$ 0,00/mês (Gratuito)',
     inheritanceLabel: null,
     features: [
       'Clube de Descontos Exclusivos em farmácias, supermercados, alimentação, serviços e lojas parceiras em todo o Brasil',
@@ -102,7 +102,7 @@ export const PLAN_COMPARISON_ROWS: PlanComparisonRow[] = [
   {
     label: 'Valor mensal (Titular)',
     values: {
-      base: 'R$ 12,00/mês',
+      base: 'R$ 0,00/mês (Gratuito)',
       bronze: 'R$ 39,90/mês',
       prata: 'R$ 69,90/mês',
       ouro: 'R$ 99,90/mês',
@@ -111,7 +111,7 @@ export const PLAN_COMPARISON_ROWS: PlanComparisonRow[] = [
   {
     label: 'Valor por dependente (sem limite)',
     values: {
-      base: 'R$ 6,00/mês',
+      base: 'R$ 0,00/mês (Gratuito)',
       bronze: '+ R$ 12,00/mês',
       prata: '+ R$ 12,00/mês',
       ouro: '+ R$ 12,00/mês',
