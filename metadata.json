@@ -1,0 +1,6 @@
+{
+  "name": "Clube de Benefícios da Associação — AHRMP",
+  "description": "Plataforma institucional de benefícios da Associação Habitacional da Região Metropolitana de Piracicaba (AHRMP), com tecnologia e operação VTXMais.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

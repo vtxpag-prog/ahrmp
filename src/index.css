@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  --brand-primary: #13315c;
+  --brand-primary-dark: #0d2344;
+  --brand-accent: #1d8a5a;
+  --brand-accent-dark: #156e47;
+  --brand-font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --brand-font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --brand-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@theme inline {
+  --font-display: var(--brand-font-display);
+  --font-sans: var(--brand-font-sans);
+  --font-mono: var(--brand-font-mono);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-primary-dark: var(--brand-primary-dark);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-dark: var(--brand-accent-dark);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    color: #0f172a;
+    background-color: #f8fafc;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+}
