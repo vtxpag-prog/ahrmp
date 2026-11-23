@@ -22,6 +22,14 @@ export async function apiRequest<T>(
     credentials: 'include',
   });
 
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    throw new ApiError(
+      'Serviço de API indisponível neste ambiente.',
+      response.status || 503,
+    );
+  }
+
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     throw new ApiError(

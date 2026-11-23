@@ -7,6 +7,12 @@ import {
   applyBrandTheme,
   mergeBrandConfig,
 } from './config/brand.ts';
+import {
+  DEFAULT_ACTIVE_CAMPAIGNS,
+  DEFAULT_CATEGORIES,
+  DEFAULT_FEATURED_COMPANIES,
+  DEFAULT_FEATURED_OFFERS,
+} from './config/catalogFallback.ts';
 import { AboutAhrmpView } from './components/AboutAhrmpView.tsx';
 import { AdminDashboardView } from './components/AdminDashboardView.tsx';
 import { AuthView } from './components/AuthView.tsx';
@@ -47,10 +53,12 @@ export default function App() {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [brand, setBrand] = useState<BrandConfig>(DEFAULT_BRAND_CONFIG);
   const [legal, setLegal] = useState<LegalConfig>(DEFAULT_LEGAL_CONFIG);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [featuredCompanies, setFeaturedCompanies] = useState<Company[]>([]);
-  const [featuredOffers, setFeaturedOffers] = useState<Offer[]>([]);
-  const [activeCampaigns, setActiveCampaigns] = useState<Campaign[]>([]);
+  const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
+  const [featuredCompanies, setFeaturedCompanies] = useState<Company[]>(
+    DEFAULT_FEATURED_COMPANIES,
+  );
+  const [featuredOffers, setFeaturedOffers] = useState<Offer[]>(DEFAULT_FEATURED_OFFERS);
+  const [activeCampaigns, setActiveCampaigns] = useState<Campaign[]>(DEFAULT_ACTIVE_CAMPAIGNS);
   const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
 
   const [catalogCategoryId, setCatalogCategoryId] = useState<number | undefined>(undefined);
@@ -61,14 +69,26 @@ export default function App() {
   async function loadBootstrap() {
     try {
       const data = await apiRequest<InstitutionalBootstrap>('/api/public/bootstrap');
-      setBrand(mergeBrandConfig(data.brand));
-      setLegal(data.legal);
-      setCategories(data.categories);
-      setFeaturedCompanies(data.featuredCompanies);
-      setFeaturedOffers(data.featuredOffers);
-      setActiveCampaigns(data.activeCampaigns);
+      if (data.brand && typeof data.brand === 'object') {
+        setBrand(mergeBrandConfig(data.brand));
+      }
+      if (data.legal && typeof data.legal === 'object') {
+        setLegal(data.legal);
+      }
+      if (Array.isArray(data.categories)) {
+        setCategories(data.categories);
+      }
+      if (Array.isArray(data.featuredCompanies)) {
+        setFeaturedCompanies(data.featuredCompanies);
+      }
+      if (Array.isArray(data.featuredOffers)) {
+        setFeaturedOffers(data.featuredOffers);
+      }
+      if (Array.isArray(data.activeCampaigns)) {
+        setActiveCampaigns(data.activeCampaigns);
+      }
     } catch {
-      // Fallback to static defaults if network fails
+      // Fallback to static defaults when API server is unavailable (e.g. static deploy)
     }
   }
 
@@ -449,6 +469,7 @@ export default function App() {
           <CatalogView
             categories={categories}
             companies={featuredCompanies}
+            fallbackOffers={featuredOffers}
             initialCategoryId={catalogCategoryId}
             selectedCompanyId={selectedCompanyId}
             user={user}

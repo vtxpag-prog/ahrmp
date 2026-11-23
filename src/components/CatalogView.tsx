@@ -14,6 +14,11 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { COMMERCIAL_TIER_LABELS } from '../config/brand.ts';
+import {
+  DEFAULT_FEATURED_COMPANIES,
+  DEFAULT_FEATURED_OFFERS,
+  filterFallbackOffers,
+} from '../config/catalogFallback.ts';
 import { apiRequest } from '../lib/api.ts';
 import type { AuthUser, Category, Company, Coupon, Offer } from '../types.ts';
 import { BrandImage } from './BrandImage.tsx';
@@ -22,6 +27,7 @@ import { QrCodeDisplay } from './QrCodeDisplay.tsx';
 interface CatalogViewProps {
   categories: Category[];
   companies: Company[];
+  fallbackOffers?: Offer[];
   initialCategoryId?: number;
   selectedCompanyId?: number | null;
   user: AuthUser | null;
@@ -37,6 +43,7 @@ interface CatalogViewProps {
 export function CatalogView({
   categories,
   companies,
+  fallbackOffers = DEFAULT_FEATURED_OFFERS,
   initialCategoryId,
   selectedCompanyId,
   user,
@@ -92,10 +99,25 @@ export function CatalogView({
 
     apiRequest<{ offers: Offer[] }>(`/api/catalog/offers?${params.toString()}`)
       .then((res) => {
-        if (active) setOffers(res.offers);
+        if (active) {
+          setOffers(Array.isArray(res.offers) ? res.offers : []);
+        }
       })
-      .catch((err) => {
-        if (active) setError(err.message || 'Não foi possível carregar o catálogo.');
+      .catch(() => {
+        if (active) {
+          const source = fallbackOffers.length > 0 ? fallbackOffers : DEFAULT_FEATURED_OFFERS;
+          setOffers(
+            filterFallbackOffers(source, {
+              q: search,
+              categoryId,
+              subcategory,
+              neighborhood,
+              featuredOnly,
+              sort,
+            }),
+          );
+          setError('');
+        }
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -104,7 +126,7 @@ export function CatalogView({
     return () => {
       active = false;
     };
-  }, [search, categoryId, subcategory, neighborhood, featuredOnly, sort]);
+  }, [search, categoryId, subcategory, neighborhood, featuredOnly, sort, fallbackOffers]);
 
   useEffect(() => {
     if (!selectedCompanyId) {
@@ -118,7 +140,19 @@ export function CatalogView({
         if (active) setCompanyDetail(res);
       })
       .catch(() => {
-        if (active) setCompanyDetail(null);
+        if (active) {
+          const companyPool = companies.length > 0 ? companies : DEFAULT_FEATURED_COMPANIES;
+          const offerPool = fallbackOffers.length > 0 ? fallbackOffers : DEFAULT_FEATURED_OFFERS;
+          const matched = companyPool.find((c) => c.id === selectedCompanyId);
+          if (matched) {
+            setCompanyDetail({
+              company: matched,
+              offers: offerPool.filter((o) => o.companyId === selectedCompanyId),
+            });
+          } else {
+            setCompanyDetail(null);
+          }
+        }
       })
       .finally(() => {
         if (active) setLoadingCompany(false);
@@ -126,7 +160,7 @@ export function CatalogView({
     return () => {
       active = false;
     };
-  }, [selectedCompanyId]);
+  }, [selectedCompanyId, companies, fallbackOffers]);
 
   const activeCategory = categories.find((c) => c.id === categoryId);
   const categoriesWithOffers = categories.filter((c) => (c.activeOffersCount || 0) > 0);
