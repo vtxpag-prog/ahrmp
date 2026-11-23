@@ -7,6 +7,7 @@ import {
   applyBrandTheme,
   mergeBrandConfig,
 } from './config/brand.ts';
+import { AboutAhrmpView } from './components/AboutAhrmpView.tsx';
 import { AdminDashboardView } from './components/AdminDashboardView.tsx';
 import { AuthView } from './components/AuthView.tsx';
 import { BrandLogo } from './components/BrandLogo.tsx';
@@ -28,7 +29,15 @@ import type {
   Offer,
 } from './types.ts';
 
-type ActiveRoute = 'home' | 'catalog' | 'plans' | 'auth' | 'consumer' | 'partner' | 'admin';
+type ActiveRoute =
+  | 'home'
+  | 'about_ahrmp'
+  | 'catalog'
+  | 'plans'
+  | 'auth'
+  | 'consumer'
+  | 'partner'
+  | 'admin';
 
 export default function App() {
   const [route, setRoute] = useState<ActiveRoute>('home');
@@ -143,6 +152,13 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function navigateToAboutAhrmp() {
+    setSelectedCompanyId(null);
+    setRoute('about_ahrmp');
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   const isAdmin = Boolean(user && ADMIN_ROLES.includes(user.role));
   const isPartner = Boolean(user && (user.role === 'partner_company' || isAdmin));
 
@@ -179,6 +195,15 @@ export default function App() {
               }`}
             >
               Início
+            </button>
+            <button
+              type="button"
+              onClick={navigateToAboutAhrmp}
+              className={`hover:text-brand-primary transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                route === 'about_ahrmp' ? 'text-brand-primary font-semibold' : ''
+              }`}
+            >
+              A {brand.institutionAcronym}
             </button>
             <button
               type="button"
@@ -292,6 +317,13 @@ export default function App() {
             </button>
             <button
               type="button"
+              onClick={navigateToAboutAhrmp}
+              className="block w-full text-left py-2 font-medium text-slate-800"
+            >
+              A {brand.institutionAcronym}
+            </button>
+            <button
+              type="button"
               onClick={() => navigateToCatalog(undefined)}
               className="block w-full text-left py-2 font-medium text-slate-800"
             >
@@ -394,6 +426,20 @@ export default function App() {
             onOpenOffer={(offer) => {
               setOfferModal(offer);
               setRoute('catalog');
+            }}
+            onOpenLegalModal={setLegalModal}
+          />
+        )}
+
+        {route === 'about_ahrmp' && (
+          <AboutAhrmpView
+            brand={brand}
+            user={user}
+            onNavigateCatalog={() => navigateToCatalog(undefined)}
+            onNavigatePlans={navigateToPlans}
+            onNavigateAuth={(t = 'login') => {
+              setAuthTab(t);
+              setRoute('auth');
             }}
             onOpenLegalModal={setLegalModal}
           />

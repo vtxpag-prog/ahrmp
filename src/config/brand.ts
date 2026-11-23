@@ -38,10 +38,10 @@ export const DEFAULT_BRAND_CONFIG: BrandConfig = {
   heroHeadline: 'Vantagens reais no comércio local para associados e comunidade de Piracicaba.',
   heroSubheadline:
     'Acesso gratuito a benefícios, descontos exclusivos e experiências em estabelecimentos parceiros da Região Metropolitana de Piracicaba, com apresentação digital por código ou QR Code.',
-  logoMainUrl: '/assets/aistudio/logo_sem_fundo_6380bf00.jpeg',
-  logoCompactUrl: '/assets/aistudio/logo_sem_fundo_6380bf00.jpeg',
-  logoIconUrl: '/assets/aistudio/logo_sem_fundo_6380bf00.jpeg',
-  faviconUrl: '/assets/aistudio/logo_sem_fundo_6380bf00.jpeg',
+  logoMainUrl: '/assets/aistudio/Gemini_Generated_Image_2ujvlu2ujvlu2ujv_65547af2.jpeg',
+  logoCompactUrl: '/assets/aistudio/Gemini_Generated_Image_2ujvlu2ujvlu2ujv_65547af2.jpeg',
+  logoIconUrl: '/assets/aistudio/Gemini_Generated_Image_2ujvlu2ujvlu2ujv_65547af2.jpeg',
+  faviconUrl: '/assets/aistudio/Gemini_Generated_Image_2ujvlu2ujvlu2ujv_65547af2.jpeg',
   heroImageUrl:
     '/assets/aistudio/Entre-os-destaques-estao-troca-do-piso-restauro-do-coreto-implantacao-de-playground-fonte-interativa-e-reorganizacao-viaria-1024x571_9dea45b9.jpg',
   primaryColor: '#13315C',
